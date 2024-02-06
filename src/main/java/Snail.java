@@ -26,7 +26,33 @@ public class Snail {
      *         returns an empty array if array2d is not square.
      */
     public static int[] flattenSnail(int[][] array2d) {
-        return null;
+        int columnLength = array2d[0].length;
+        int rowLength = array2d.length;
+        int[] output = new int[columnLength * rowLength];
+        int maxLayer = Math.min(columnLength, rowLength) / 2;
+        int index = 0;
+
+        for (int layer = 0; layer < maxLayer; layer++) {
+            for (int i = layer; i < columnLength - layer; i++) {
+                output[index++] = array2d[layer][i];
+            }
+            for (int i = layer + 1; i < rowLength - layer; i++) {
+                output[index++] = array2d[i][columnLength - 1 - layer];
+            }
+            for (int i = columnLength - 2 - layer; i >= layer; i--) {
+                output[index++] = array2d[rowLength - 1 - layer][i];
+            }
+            for (int i = rowLength - 2 - layer; i > layer; i--) {
+                output[index++] = array2d[i][layer];
+            }
+        }
+
+        if (!isEven2d(array2d)) {
+            int center = columnLength / 2;
+            output[index] = array2d[center][center];
+        }
+
+        return output;
     }
 
     /**
@@ -58,7 +84,37 @@ public class Snail {
      *         returns an empty 2d array if the length of array1d is not a perfect square.
      */
     public static int[][] makeSnail(int[] array1d) {
-        return null;
+        if (array1d == null){
+            return new int[0][0];
+        }
+        int length = array1d.length;
+        int sqrtLength = (int) Math.sqrt(length);
+        if (!isPerfectSquare(array1d)) {
+            return new int[0][0];
+        }
+
+        int[][] output = new int[sqrtLength][sqrtLength];
+        int index = 0;
+
+        for (int layer = 0; layer < sqrtLength / 2; layer++) {
+            for (int i = layer; i < sqrtLength - layer; i++) {
+                output[layer][i] = array1d[index++];
+            }
+            for (int i = layer + 1; i < sqrtLength - layer; i++) {
+                output[i][sqrtLength - 1 - layer] = array1d[index++];
+            }
+            for (int i = sqrtLength - 2 - layer; i >= layer; i--) {
+                output[sqrtLength - 1 - layer][i] = array1d[index++];
+            }
+            for (int i = sqrtLength - 2 - layer; i > layer; i--) {
+                output[i][layer] = array1d[index++];
+            }
+        }
+        if (!isEven1d(array1d)) {
+            int center = sqrtLength / 2;
+            output[center][center] = array1d[index];
+        }
+        return output;
     }
 
     /**
@@ -71,7 +127,9 @@ public class Snail {
      * @param array1d
      */
     private static void print1dArray(int[] array1d) {
-
+        for (int row : array1d) {
+            System.out.println(row);
+        }
     }
 
     /**
@@ -84,7 +142,11 @@ public class Snail {
      * @param array2d
      */
     private static void print2dArray(int[][] array2d) {
-
+        for (int[] row : array2d) {
+            for (int element : row) {
+                System.out.println(element);
+            }
+        }
     }
 
     /**
@@ -97,9 +159,12 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[] array1d) {
+        int rooted = (int) Math.sqrt(array1d.length);
+        if (rooted * rooted == array1d.length) {
+            return true;
+        }
         return false;
     }
-
 
     /**
      *
@@ -111,8 +176,26 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[][] array2d) {
+        int rowCount = array2d.length;
+        int columnCount = array2d[0].length;
+        if (rowCount == columnCount) {
+            return true;
+            }
         return false;
     }
 
-
+    private static boolean isEven2d(int[][] array2d) {
+        int length = array2d[0].length;
+        if (length % 2 == 0) {
+            return true;
+        }
+        return false;
+    }
+    private static boolean isEven1d(int[] array1d) {
+        int length = array1d.length;
+        if (length % 2 == 0) {
+            return true;
+        }
+        return false;
+    }
 }

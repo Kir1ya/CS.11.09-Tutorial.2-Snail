@@ -31,9 +31,13 @@ Takes a 1D array and returns a 2D array. The contents of the 2D array should be 
 If an array resembling [1,2,3,4,5,6,7,8,9] was passed to this method, then a 2D array resembling
 
 { 
+
   {1,2,3},
+  
   {8,9,4},
+  
   {7,6,5}
+  
 }
 
 should be returned.
